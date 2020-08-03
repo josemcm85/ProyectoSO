@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <ctime> 
+#include <ctime>
 using namespace std;
 
 
@@ -39,7 +39,7 @@ struct nodoPaginaProceso{
     bool enUso;
     bool enEspera;
     double memoria;
-    int idPagina; 
+    int idPagina;
     int idProceso;
     nodoPaginaProceso*siguiente;
 };
@@ -83,6 +83,85 @@ struct nodoNumero{
 };
 typedef nodoNumero*colaNumeros;
 
+//-----------Constructores-----------------------------------------
+nodoNumero*crearNodoNumero(int num){
+	nodoNumero*aux=new(struct nodoNumero);
+	aux->num=num;
+	aux->siguiente=NULL;
+	return aux;
+}
+
+nodoMarcoPagina*crearNodoMarcoPagina(int idMarco, double memTotal, bool enUso){
+	nodoMarcoPagina*aux=new (struct nodoMarcoPagina);
+	aux->idMarco=idMarco;
+	aux->memTotal=memTotal;
+	aux->enUso=enUso;
+	aux->siguiente=NULL;
+	return aux;
+
+}
+
+nodoUsoMarco*crearNodoUsoMarco(int idMarco,int idProceso,int paginaProceso,double memoriaUsada){
+	nodoUsoMarco*aux=new(struct nodoUsoMarco);
+	aux->idMarco=idMarco;
+	aux->idProceso=idProceso;
+	aux->paginaProceso=paginaProceso;
+	aux->memoriaUsada=memoriaUsada;
+	aux->siguiente=NULL;
+	return aux;
+
+}
+
+nodoPaginaProceso*crearNodoPaginaProceso(int idPagina,int idProceso,double memoria,bool enUso,bool enEspera){
+	nodoPaginaProceso*aux=new(struct nodoPaginaProceso);
+	aux->idPagina=idPagina;
+	aux->idProceso=idProceso;
+	aux->memoria=memoria;
+	aux->enUso=enUso;
+	aux->enEspera=enEspera;
+	aux->siguiente=NULL;
+	return aux;
+
+}
+
+nodoProceso*crearNodoProceso(int idProceso,string nombre,double memTotal){
+	nodoProceso*aux=new(struct nodoProceso);
+	aux->idProceso=idProceso;
+	aux->nombre=nombre;
+	aux->memTotal=memTotal;
+	aux->paginas=NULL;
+	aux->siguiente=NULL;
+	return aux;
+}
+
+ nodoSwap*crearNodoSwap(double memoriaUsada, int idProceso, int paginaProceso){
+	nodoSwap*aux=new(struct nodoSwap);
+	aux->memoriaUsada=memoriaUsada;
+	aux->idProceso=idProceso;
+	aux->paginaProceso=paginaProceso;
+	aux->siguiente=NULL;
+	return aux;
+}
+
+	nodoPagTabla*crearNodoPagTabla(int numPagina,int marcoUbicacion){
+		nodoPagTabla*aux=new(struct nodoPagTabla);
+		aux->numPagina=numPagina;
+		aux->marcoUbicacion=marcoUbicacion;
+		aux->siguiente=NULL;
+		return aux;
+	}
+
+	nodoTablaPag*crearNodoTablaPag(int idProceso){
+		nodoTablaPag*aux=new(struct nodoTablaPag);
+		aux->idProceso=idProceso;
+		aux->paginasTablaPag=NULL;
+		aux->siguiente=NULL;
+		return aux;
+	}
+
+
+
+
+
+
 //------------Metodos---------------------------------------------
-
-

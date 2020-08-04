@@ -663,6 +663,152 @@ listaSwap eliminarProcesoSwap(listaSwap&cab, int idProceso){
 		return existe;
 	}
 
+//------Métodos de vista-------------
+void verListaMarcos(listaMarcos cab){
+	listaMarcos aux;
+	aux=cab;
+	string uso;
+	double memTotal=0;
+	if(cab==NULL){
+		cout<<"Memoria corrupta"<<endl;
+
+	}else{
+		cout<<"Lista de marcos de memoria"<<endl;
+		cout<<"Marco	Memoria		En uso"<<endl;
+	 while(aux!=NULL)	{
+
+	 	if(aux->enUso==true){
+	 		uso="Si";
+		 }else{
+		 	uso="No";
+		 }
+		cout<<aux->idMarco<<"	"<<aux->memTotal<<" MB"<<"		"<<uso<<endl;
+	 	cout<<""<<endl;
+	 	memTotal=memTotal+aux->memTotal;
+
+	 	aux=aux->siguiente;
+	 }
+	 cout<<"Memoria total:"<<memTotal<<" MB"<<endl;
+	}
+}
+
+void verColaUsoMarcos(colaUso cab){
+	colaUso aux;
+	aux=cab;
+	double memUso=0;
+	if(cab==NULL){
+		cout<<"La memoria no esta siendo usada"<<endl;
+	}else{
+		cout<<"	Lista de marcos en uso"<<endl;
+		cout<<"Marco	Proceso:Pagina 		Memoria en uso"<<endl;
+		cout<<""<<endl;
+		while(aux!=NULL){
+				memUso=memUso+aux->memoriaUsada;
+			cout<<aux->idMarco<<"	"<<aux->idProceso<<":"<<aux->paginaProceso<<"			"<<aux->memoriaUsada<<" MB"<<endl;
+
+
+			cout<<""<<endl;
+
+			aux=aux->siguiente;
+		}
+
+		cout<<"Memoria en uso: "<<memUso<<" MB"<<"/1024 MB"<<endl;
+	}
+}
+
+void verProcesos(listaProcesos cab){
+
+	listaProcesos aux;
+	nodoPaginaProceso*aux1;
+	aux=cab;
+	string uso;
+	string espera;
+	if(cab==NULL){
+		cout<<"Lista vacia"<<endl;
+	}else{
+		cout<<"				Lista de procesos"<<endl;
+		cout<<"ID	Nombre		Memoria		IDPag	EspacioDisco	EnUso	EnSwap"<<endl;
+
+		cout<<""<<endl;
+		while(aux!=NULL){
+
+			cout<<aux->idProceso<<"	"<<aux->nombre<<"	"<<aux->memTotal<<" MB"<<endl;
+			cout<<""<<endl;
+
+			aux1=aux->paginas;
+			while(aux1!=NULL){
+
+				if(aux1->enUso==true){
+					uso="Si";
+				}else{
+						uso="No";
+				}
+
+				if(aux1->enEspera==true){
+						espera="Si";
+				}else{
+						espera="No";
+				}
+				cout<<"					"<<aux1->idPagina<<"	"<<aux1->memoria<<" MB"<<"		"<<uso<<"	"<<espera<<endl;
+				cout<<""<<endl;
+					aux1=aux1->siguiente;
+			}
+			cout<<""<<endl;
+			aux=aux->siguiente;
+		}
+	}
+}
+
+void verlistaSwap(listaSwap cab){
+	listaSwap aux;
+	aux=cab;
+	double memUso=0;
+	if(cab==NULL){
+		cout<<"La memoria swap no esta siendo usada"<<endl;
+	}else{
+
+		cout<<"	Lista de paginas en swap"<<endl;
+		cout<<"Proceso:Pagina   	Memoria en uso"<<endl;
+		cout<<""<<endl;
+
+		while(aux!=NULL){
+				memUso=memUso+aux->memoriaUsada;
+			cout<<aux->idProceso<<":"<<aux->paginaProceso<<"			"<<aux->memoriaUsada<<" MB"<<endl;
+			cout<<""<<endl;
+			aux=aux->siguiente;
+		}
+		cout<<"swap en uso: "<<memUso<<" MB"<<"/2048 MB"<<endl;
+	}
+}
+
+void verTablasPag(listaTablas cab){
+	listaTablas aux;
+	nodoPagTabla*aux1;
+	aux=cab;
+	if(cab==NULL){
+		cout<<"No existen tablas de paginacion"<<endl;
+	}else{
+		cout<<"	Lista de tablas"<<endl;
+		cout<<"ID	 #Pagina	Marco	"<<endl;
+		cout<<""<<endl;
+
+		while(aux!=NULL){
+
+			cout<<aux->idProceso<<endl;
+			cout<<""<<endl;
+			aux1=aux->paginasTablaPag;
+
+			while(aux1!=NULL){
+				cout<<"	"<<aux1->numPagina<<"	"<<aux1->marcoUbicacion<<endl;
+				cout<<""<<endl;
+				aux1=aux1->siguiente;
+			}
+			cout<<""<<endl;
+			aux=aux->siguiente;
+		}
+	}
+}
+
 
 	int main(){
 

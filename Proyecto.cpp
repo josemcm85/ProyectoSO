@@ -575,7 +575,96 @@ void modificarPaginaTabla(listaTablas cab, int idProceso,int numPagina,int marco
 }
 
 
-int main(){
+//----------listaSwap--------------
+void ingresarPaginaSwap(listaSwap&cab,int idProceso, int paginaProceso,double memoriaUsada){
+	nodoSwap*nuevo;
+	listaSwap aux;
+	nuevo=crearNodoSwap(idProceso,paginaProceso,memoriaUsada);
+
+	if(cab==NULL)
+	cab=nuevo;
+	else
+	{
+		aux=cab;
+		while(aux->siguiente!=NULL)
+		aux=aux->siguiente;
+
+		aux->siguiente=nuevo;
+	}
+}
+
+
+listaSwap sacarPaginaSwap(listaSwap&cab){
+	listaSwap aux;
+
+	if (cab->siguiente == NULL) {
+		aux = cab;
+
+
+		aux = NULL;
+		cab = NULL;
+		delete(aux);
+	}
+	else {
+		aux = cab;
+
+		cab = cab->siguiente;
+		aux = NULL;
+		delete(aux);
+	}
+	return cab;
+}
+
+listaSwap eliminarProcesoSwap(listaSwap&cab, int idProceso){
+	listaSwap aux,aux2;
+	if(cab==NULL){
+		cout<<"No hay paginas en memoria swap"<<endl;
+	}else{
+		aux=cab;
+
+		if(aux->idProceso==idProceso ){
+
+			cab=cab->siguiente;
+			aux->siguiente=NULL;
+			aux=NULL;
+			free(aux);
+		}else{
+
+			while(aux->siguiente!=NULL){
+
+				if(aux->siguiente->idProceso==idProceso){
+					aux2=aux->siguiente;
+					aux->siguiente=aux->siguiente->siguiente;
+					aux2->siguiente=NULL;
+					aux2=NULL;
+					free(aux2);
+					break;
+				}
+				aux=aux->siguiente;
+			}
+		}
+	}
+	return cab;
+}
+
+	bool paginaSwapExiste(listaSwap cab, int idProceso){
+		bool existe=false;
+		listaSwap aux;
+		aux=cab;
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+				existe=true;
+			}
+
+			aux=aux->siguiente;
+		}
+		return existe;
+	}
+
+
+	int main(){
 
 	return 0;
 }

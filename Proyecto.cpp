@@ -460,7 +460,62 @@ void modificarPaginaProceso(listaProcesos cab,int idProceso,int idPagina,bool en
 	}
 }
 
+//---------listaTablas--------------------
+void ingresarTabla(listaTablas&cab, int idProceso){
+nodoTablaPag*nuevo;
+listaTablas aux;
+nuevo=crearNodoTablaPag(idProceso);
 
+if(cab==NULL)
+cab=nuevo;
+else
+{
+	aux=cab;
+	while(aux->siguiente!=NULL)
+	aux=aux->siguiente;
+
+	aux->siguiente=nuevo;
+}
+
+
+
+}
+
+listaTablas eliminarTabla(listaTablas cab,int idProceso){
+	listaTablas aux;
+	listaTablas aux2;
+	if(cab==NULL){
+			cout<<"No existen tablas de paginacion"<<endl;
+
+		}else{
+			aux=cab;
+
+			if(aux->idProceso==idProceso){
+
+				cab=cab->siguiente;
+				aux->siguiente=NULL;
+				aux=NULL;
+				free(aux);
+			}else{
+
+				while(aux->siguiente!=NULL){
+
+					if(aux->siguiente->idProceso==idProceso){
+						aux2=aux->siguiente;
+						aux->siguiente=aux->siguiente->siguiente;
+						aux2->siguiente=NULL;
+						aux2=NULL;
+						free(aux2);
+						break;
+					}
+					aux=aux->siguiente;
+				}
+			}
+		}
+
+
+	return cab;
+}
 
 
 int main(){

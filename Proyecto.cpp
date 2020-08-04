@@ -275,6 +275,103 @@ void modificarMarcoPagina(listaMarcos&cab,int idMarco,bool enUso){
 	}
 }
 
+//------colaUso--------
+void ingresarUsoMarco(colaUso&cab,int idMarco,int idProceso,int paginaProceso,double memoriaUsada){
+	nodoUsoMarco*nuevo;
+	colaUso aux;
+	nuevo=crearNodoUsoMarco(idMarco,idProceso,paginaProceso,memoriaUsada);
+
+	if(cab==NULL)
+	cab=nuevo;
+	else
+	{
+		aux=cab;
+		while(aux->siguiente!=NULL)
+		aux=aux->siguiente;
+
+		aux->siguiente=nuevo;
+	}
+
+
+}
+
+colaUso sacarUsoMarco(colaUso cab){
+	//Saca la cabeza de colaUso
+	colaUso aux;
+
+	if (cab->siguiente == NULL) {
+		aux = cab;
+
+
+		aux = NULL;
+		cab = NULL;
+		delete(aux);
+	}
+	else {
+		aux = cab;
+
+		cab = cab->siguiente;
+		aux = NULL;
+		delete(aux);
+	}
+
+	return cab;
+
+}
+
+colaUso eliminarUsoMarco(colaUso cab, int idProceso){
+	//Elimina coincidencias del proceso especificado
+colaUso aux;
+colaUso aux2;
+
+
+	if(cab==NULL){
+		cout<<"No hay marcos por liberar, todos estan disponibles"<<endl;
+
+	}else{
+		aux=cab;
+
+		if(aux->idProceso==idProceso){
+
+			cab=cab->siguiente;
+			aux->siguiente=NULL;
+			aux=NULL;
+			free(aux);
+		}else{
+
+			while(aux->siguiente!=NULL){
+
+				if(aux->siguiente->idProceso==idProceso){
+					aux2=aux->siguiente;
+					aux->siguiente=aux->siguiente->siguiente;
+					aux2->siguiente=NULL;
+					aux2=NULL;
+					free(aux2);
+					break;
+				}
+				aux=aux->siguiente;
+			}
+		}
+	}
+	return cab;
+}
+
+bool usoMarcoExiste(colaUso cab, int idProceso){
+bool existe=false;
+colaUso aux;
+aux=cab;
+
+while(aux!=NULL){
+
+	if(aux->idProceso==idProceso){
+		existe=true;
+	}
+
+	aux=aux->siguiente;
+}
+return existe;
+}
+
 
 
 int main(){

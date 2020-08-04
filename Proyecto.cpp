@@ -235,6 +235,45 @@ bool numExiste(colaNumeros cab, int num){
 }
 
 //------listaMarcos----------
+void ingresarMarcoPagina(listaMarcos&cab,int idMarco, double memTotal, bool enUso){
+	nodoMarcoPagina*nuevo;
+	listaMarcos aux;
+	nuevo=crearNodoMarcoPagina(idMarco,memTotal,enUso);
+
+	if(cab==NULL)
+
+	cab=nuevo;
+
+	else{
+		aux=cab;
+		while(aux->siguiente!=NULL)
+		aux=aux->siguiente;
+
+		aux->siguiente=nuevo;
+	}
+
+}
+
+void modificarMarcoPagina(listaMarcos&cab,int idMarco,bool enUso){
+	listaMarcos aux;
+
+	aux=cab;
+	if(cab==NULL){
+
+		cout<<"lista vacia";
+
+	}else{
+
+		while(aux!=NULL){
+
+			if(idMarco==aux->idMarco){
+				aux->enUso=enUso;
+			}
+
+			aux=aux->siguiente;
+		}
+	}
+}
 
 
 

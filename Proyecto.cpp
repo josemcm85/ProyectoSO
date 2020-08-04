@@ -810,7 +810,149 @@ void verTablasPag(listaTablas cab){
 }
 
 
-	int main(){
+int main(){
+	listaMarcos marcos=NULL;
+	colaUso marcosEnUso=NULL;
+	listaProcesos procesos=NULL;
+	listaTablas tablas=NULL;
+	listaSwap swap=NULL;
+	double memoria;
+	int memInt;
+	int ingresados=0;
+	double memoriaExtra;
+	int memDeMas;
+	double paginasNecesita;
+	int paginaActual=0;
+
+	do{
+		memoriaExtra=0;
+		ingresados++;
+
+			switch(ingresados){
+				case 1:
+				memoria=450;
+				ingresarProceso(procesos,1,"Spotify.exe",memoria);
+				break;
+
+				case 2:
+				memoria=450;
+				ingresarProceso(procesos,2,"Word.exe",memoria);
+				break;
+
+				case 3:
+				memoria=450;
+				ingresarProceso(procesos,3,"Excel.exe",memoria);
+				break;
+
+				case 4:
+				memoria=775;
+				ingresarProceso(procesos,4,"Photoshop.exe",memoria);
+				break;
+
+				case 5:
+	 	    memoria=825;
+				ingresarProceso(procesos,5,"League of Legends.exe",memoria);
+				break;
+
+	  }
+		memInt=memoria;
+		memoriaExtra=memInt % 64;
+		memoria-memoriaExtra;
+		paginasNecesita=memoria/64;
+		paginaActual=1;
+
+		do{
+
+			ingresarPaginaProceso(procesos,paginaActual,ingresados,64,false,false);
+			paginasNecesita=paginasNecesita-1;
+			paginaActual++;
+		}while(paginasNecesita>1);
+
+		if(memoriaExtra!=0){
+			ingresarPaginaProceso(procesos,paginaActual,ingresados,memoriaExtra,false,false);
+		}
+
+
+	}while(ingresados!=5);
+
+	ingresados=0;
+
+	do{
+		ingresados++;
+		ingresarMarcoPagina(marcos,ingresados,64,false);
+
+	}while(ingresados!=16);
+/*
+Abrir proceso
+ver procesos
+ver marcos
+ver marcos en uso
+ver swap
+ver tablas de paginas
+ver procesos en ejecucion(marcos+swap)
+salir
+*/
+	int opcion;
+
+	do{
+		system("cls");
+		cout<<"Ingrese una opcion"<<endl;
+		cout<<"1.Abrir un proceso"<<endl;
+		cout<<"2.Ver procesos"<<endl;
+		cout<<"3.Ver marcos de memoria"<<endl;
+		cout<<"4.Ver marcos en uso"<<endl;
+		cout<<"5.Ver Swap"<<endl;
+		cout<<"6. Ver tablas de paginas"<<endl;
+		cout<<"7. Ver procesos en ejecucion"<<endl;
+		cout<<"8.Salir"<<endl;
+
+		cin>>opcion;
+
+		switch(opcion){
+			case 1:
+				system("cls");
+				//Método
+				system("pause");
+				break;
+
+			case 2:
+				system("cls");
+				//Método
+				system("pause");
+				break;
+
+			case 3:
+				system("cls");
+				//Método
+				system("pause");
+				break;
+
+			case 4:
+				system("cls");
+				//Método
+				system("pause");
+				break;
+
+			case 5:
+				system("cls");
+				//Método
+				system("pause");
+				break;
+
+			case 6:
+				system("cls");
+				//Método
+				system("pause");
+				break;
+
+			case 7:
+				system("cls");
+				//Método
+				system("pause");
+				break;
+		}
+
+	}while(opcion!=8);
 
 	return 0;
 }

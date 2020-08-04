@@ -165,3 +165,80 @@ nodoProceso*crearNodoProceso(int idProceso,string nombre,double memTotal){
 
 
 //------------Metodos---------------------------------------------
+
+//-----------colaNumeros-------------------
+
+void ingresarColaNum(colaNumeros&cab,int num){
+	nodoNumero*nuevo;
+	colaNumeros aux;
+	nuevo=crearNodoNumero(num);
+
+		if(cab==NULL){
+
+		cab=nuevo;
+
+		}else{
+
+		aux=cab;
+		//Recorre la lista al revisar el puntero "siguiente"
+		while(aux->siguiente!=NULL){
+			aux=aux->siguiente;
+		}
+
+		//Una vez siguiente==NULL, significa que ha llegado al
+		//final de la lista, así que coloca el nuevo como el
+		//siguiente al último
+		aux->siguiente=nuevo;
+
+	}
+
+}
+
+colaNumeros sacarColaNum(colaNumeros cab){
+//Saca el número en cabeza de cola
+
+
+	colaNumeros aux;
+
+	if (cab->siguiente==NULL){
+		aux = cab;
+
+		aux = NULL;
+		cab = NULL;
+		delete(aux);
+
+	} else{
+		aux = cab;
+		cab = cab->siguiente;
+		aux = NULL;
+		delete(aux);
+
+	}
+
+	return cab;
+}
+
+bool numExiste(colaNumeros cab, int num){
+	bool existe=false;
+	colaNumeros aux;
+	aux=cab;
+
+	while(aux!=NULL){
+		if(aux->num==num){
+			existe=true;
+		}
+
+		aux=aux->siguiente;
+	}
+
+	return existe;
+}
+
+//------listaMarcos----------
+
+
+
+int main(){
+
+	return 0;
+}

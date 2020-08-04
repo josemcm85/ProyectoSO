@@ -517,6 +517,63 @@ listaTablas eliminarTabla(listaTablas cab,int idProceso){
 	return cab;
 }
 
+ //-------pagTabla------------
+ //numPagina,marcoUbicacion
+ void ingresarPaginaTabla(listaTablas&cab,int idProceso,int numPagina,int marcoUbicacion){
+	 nodoPagTabla*nuevo,*auxp;
+	 listaTablas aux;
+	 nuevo=crearNodoPagTabla(numPagina,marcoUbicacion);
+
+	 if(cab==NULL){
+		 cout<<"No existen tablas de paginacion"<<endl;
+	 }else{
+		 aux=cab;
+
+		 while(aux->idProceso!=idProceso){
+			 aux=aux->siguiente;
+		 }
+
+		 if(aux->paginasTablaPag==NULL ){
+			 aux->paginasTablaPag==nuevo;
+		 }else{
+			 auxp=aux->paginasTablaPag;
+
+			 while(auxp->siguiente!=NULL){
+				 auxp=auxp->siguiente;
+			 }
+
+			 auxp->siguiente=nuevo;
+		 }
+
+	 }
+ }
+
+void modificarPaginaTabla(listaTablas cab, int idProceso,int numPagina,int marcoUbicacion){
+	nodoPagTabla*aux1;
+	listaTablas aux;
+	aux=cab;
+	if(cab==NULL){
+		cout<<"No existen tablas de paginacion"<<endl;
+	}else{
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+
+				aux1=aux->paginasTablaPag;
+				while(aux1!=NULL){
+
+					if(aux1->numPagina==numPagina){
+						aux1->marcoUbicacion=marcoUbicacion;
+					}
+					aux1=aux1->siguiente;
+				}
+			}
+			aux=aux->siguiente;
+		}
+	}
+}
+
 
 int main(){
 

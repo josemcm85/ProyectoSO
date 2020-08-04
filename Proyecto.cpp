@@ -372,6 +372,95 @@ while(aux!=NULL){
 return existe;
 }
 
+//--------------------------listaProcesos---------------
+void ingresarProceso(listaProcesos&cab,int idProceso,string nombre,double memTotal){
+	nodoProceso*nuevo;
+	listaProcesos aux;
+	nuevo=crearNodoProceso(idProceso,nombre,memTotal);
+
+
+	if(cab==NULL)
+	cab=nuevo;
+	else
+	{
+		aux=cab;
+		while(aux->siguiente!=NULL)
+		aux=aux->siguiente;
+
+		aux->siguiente=nuevo;
+	}
+
+}
+
+
+
+//------------------------paginaProceso---------------------
+void ingresarPaginaProceso(listaProcesos&cab,int idPagina,int idProceso,double memoria,bool enUso,bool enEspera){
+	nodoPaginaProceso*nuevo,*auxp;
+	listaProcesos aux;
+	nuevo=crearNodoPaginaProceso(idPagina,idProceso,memoria,enUso,enEspera);
+
+	if(cab==NULL){
+		cout<<"Lista vacia"<<endl;
+	}else{
+
+		aux=cab;
+		while(aux->idProceso!=idProceso){
+			aux=aux->siguiente;
+		}
+
+		if(aux->paginas==NULL){
+
+			aux->paginas=nuevo;
+
+		}else{
+
+			auxp=aux->paginas;
+
+			while(auxp->siguiente!=NULL){
+
+				auxp=auxp->siguiente;
+			}
+			auxp->siguiente=nuevo;
+		}
+
+	}
+}
+
+void modificarPaginaProceso(listaProcesos cab,int idProceso,int idPagina,bool enUso,bool enEspera){
+	listaProcesos aux;
+	nodoPaginaProceso*aux1;
+	aux=cab;
+	if(cab==NULL){
+		cout<<"Lista vacia"<<endl;
+	}else{
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+
+				aux1=aux->paginas;
+				while(aux1!=NULL){
+
+					if(aux1->idPagina==idPagina){
+						aux1->enUso=enUso;
+						aux1->enEspera=enEspera;
+					}
+
+
+					aux1=aux1->siguiente;
+				}
+
+			}
+
+
+			aux=aux->siguiente;
+		}
+
+	}
+}
+
+
 
 
 int main(){

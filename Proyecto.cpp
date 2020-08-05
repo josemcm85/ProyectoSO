@@ -795,7 +795,7 @@ void verProcesos(listaProcesos cab){
 		cout<<"Lista vacia"<<endl;
 	}else{
 		cout<<"				Lista de procesos"<<endl;
-		cout<<"ID	Nombre		Memoria		IDPag	EspacioDisco	EnUso	EnSwap"<<endl;
+		cout<<"ID	Nombre		Memoria		IDPag	EspacioDisco	EnMemoria	EnSwap"<<endl;
 
 		cout<<""<<endl;
 		while(aux!=NULL){
@@ -817,7 +817,7 @@ void verProcesos(listaProcesos cab){
 				}else{
 						espera="No";
 				}
-				cout<<"					"<<aux1->idPagina<<"	"<<aux1->memoria<<" MB"<<"		"<<uso<<"	"<<espera<<endl;
+				cout<<"					"<<aux1->idPagina<<"	"<<aux1->memoria<<" MB"<<"		"<<uso<<"		"<<espera<<endl;
 				cout<<""<<endl;
 					aux1=aux1->siguiente;
 			}

@@ -372,6 +372,23 @@ while(aux!=NULL){
 return existe;
 }
 
+int getMarcoyPagColaUso(colaUso cab,int idProceso){
+	colaUso aux;
+	aux=cab;
+	int marcoYPag=0;
+	if(cab!=NULL){
+
+		while(aux!=NULL){
+			if(aux->idProceso==idProceso){
+				marcoYPag=aux->idMarco * 100 + aux->paginaProceso;
+			}
+			aux=aux->siguiente;
+		}
+	}
+	return marcoYPag;
+}
+
+
 //--------------------------listaProcesos---------------
 void ingresarProceso(listaProcesos&cab,int idProceso,string nombre,double memTotal){
 	nodoProceso*nuevo;
@@ -391,6 +408,26 @@ void ingresarProceso(listaProcesos&cab,int idProceso,string nombre,double memTot
 	}
 
 }
+
+string getNombreProceso(listaProcesos cab, int idProceso){
+	listaProcesos aux;
+	string nombre="";
+	aux=cab;
+	if(cab==NULL){
+		cout<<"Lista vacia"<<endl;
+	}else{
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+				nombre=aux->nombre;
+				}
+					aux=aux->siguiente;
+			}
+
+		}
+		return nombre;
+	}
 
 
 
@@ -460,25 +497,53 @@ void modificarPaginaProceso(listaProcesos cab,int idProceso,int idPagina,bool en
 	}
 }
 
+//lo mismo que modificarPaginaProceso, pero aplica para todas las páginas
+void modificarProceso(listaProcesos cab,int idProceso,bool enUso,bool enEspera){
+	listaProcesos aux;
+	nodoPaginaProceso*aux1;
+	aux=cab;
+	if(cab==NULL){
+		cout<<"Lista vacia"<<endl;
+	}else{
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+
+				aux1=aux->paginas;
+				while(aux1!=NULL){
+
+
+						aux1->enUso=enUso;
+						aux1->enEspera=enEspera;
+						aux1=aux1->siguiente;
+				}
+
+			}
+
+
+			aux=aux->siguiente;
+		}
+
+	}
+}
+
 //---------listaTablas--------------------
 void ingresarTabla(listaTablas&cab, int idProceso){
 nodoTablaPag*nuevo;
 listaTablas aux;
 nuevo=crearNodoTablaPag(idProceso);
+if(cab==NULL){
 
-if(cab==NULL)
-cab=nuevo;
-else
-{
+	cab=nuevo;
+}else{
 	aux=cab;
-	while(aux->siguiente!=NULL)
+	while(aux->siguiente!=NULL){
 	aux=aux->siguiente;
+	}
 
 	aux->siguiente=nuevo;
 }
-
-
-
 }
 
 listaTablas eliminarTabla(listaTablas cab,int idProceso){
@@ -534,7 +599,10 @@ listaTablas eliminarTabla(listaTablas cab,int idProceso){
 		 }
 
 		 if(aux->paginasTablaPag==NULL ){
-			 aux->paginasTablaPag==nuevo;
+			 aux->paginasTablaPag=nuevo;
+
+
+
 		 }else{
 			 auxp=aux->paginasTablaPag;
 
@@ -579,7 +647,7 @@ void modificarPaginaTabla(listaTablas cab, int idProceso,int numPagina,int marco
 void ingresarPaginaSwap(listaSwap&cab,int idProceso, int paginaProceso,double memoriaUsada){
 	nodoSwap*nuevo;
 	listaSwap aux;
-	nuevo=crearNodoSwap(idProceso,paginaProceso,memoriaUsada);
+	nuevo=crearNodoSwap(memoriaUsada,idProceso,paginaProceso);
 
 	if(cab==NULL)
 	cab=nuevo;
@@ -799,7 +867,7 @@ void verTablasPag(listaTablas cab){
 			aux1=aux->paginasTablaPag;
 
 			while(aux1!=NULL){
-				cout<<"	"<<aux1->numPagina<<"	"<<aux1->marcoUbicacion<<endl;
+				cout<<"	"<<aux1->numPagina<<"		"<<aux1->marcoUbicacion<<endl;
 				cout<<""<<endl;
 				aux1=aux1->siguiente;
 			}
@@ -808,14 +876,407 @@ void verTablasPag(listaTablas cab){
 		}
 	}
 }
+//---------------Misc-------------------------....
+bool getProcesoEstaAbierto(listaTablas cab,int idProceso){
+	bool estaAbierto=false;
+	listaTablas aux;
+	aux=cab;
+	if(cab=NULL)	{
+	return estaAbierto;
+	}else{
+
+		while(aux!=NULL){
+
+			if(idProceso==aux->idProceso){
+				estaAbierto=true;
+			}
+			aux=aux->siguiente;
+		}
 
 
+	}
+	return estaAbierto;
+}
+
+bool getPaginaEstaAbierta(listaTablas cab, int idProceso, int numPagina){
+	bool estaAbierto=false;
+	listaTablas aux;
+	nodoPagTabla* auxp;
+	aux=cab;
+	if(cab=NULL){
+		return estaAbierto;
+	}else{
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+				auxp=aux->paginasTablaPag;
+
+				while(auxp!=NULL){
+
+					if(auxp->numPagina==numPagina){
+						estaAbierto=true;
+					}
+					auxp=auxp->siguiente;
+				}
+			}
+			aux=aux->siguiente;
+
+		}
+	}
+	return estaAbierto;
+}
+
+
+int marcosDisponibles(listaMarcos cab){
+	listaMarcos aux;
+	aux=cab;
+	int cantMarcos=0;
+	if(cab==NULL){
+		cout<<"No hay marcos registrados";
+	}else{
+		while(aux!=NULL){
+			if(aux->enUso==false){
+				cantMarcos++;
+			}
+			aux=aux->siguiente;
+		}
+	}
+	return cantMarcos;
+}
+
+int getMarcoDisponible(listaMarcos marcos){
+	listaMarcos aux;
+	int idMarco=0;
+	aux=marcos;
+	while(aux!=NULL){
+		if(aux->enUso==false){
+			idMarco=aux->idMarco;
+
+			break;
+		}
+
+		aux=aux->siguiente;
+	}
+
+	return idMarco;
+}
+
+int getCantidadPaginasProceso(listaProcesos cab,int idProceso){
+listaProcesos aux;
+	nodoPaginaProceso*aux1;
+	aux=cab;
+	int cantPaginas=0;
+	if(cab==NULL){
+		cout<<"Lista vacía"<<endl;
+	}else{
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+
+				aux1=aux->paginas;
+				while(aux1!=NULL){
+					cantPaginas++;
+
+
+
+					aux1=aux1->siguiente;
+				}
+
+			}
+
+
+			aux=aux->siguiente;
+		}
+
+	}
+	return cantPaginas;
+}
+
+
+bool procesoExiste(listaProcesos cab,int proceso){
+	listaProcesos aux;
+	bool existe=false;
+
+	aux=cab;
+
+	while(aux!=NULL){
+		if(proceso==aux->idProceso){
+			existe=true;
+		}
+		aux=aux->siguiente;
+	}
+
+
+
+
+	return existe;
+}
+
+
+double memoriaUsadaPagina(listaProcesos cab,int idProceso,int idPagina){
+
+	listaProcesos aux;
+	nodoPaginaProceso*aux1;
+	aux=cab;
+	string uso;
+	string espera;
+	double memoriaUsada=0;
+	if(cab==NULL){
+	}else{
+
+		while(aux!=NULL){
+
+		if(aux->idProceso==idProceso){
+
+
+				aux1=aux->paginas;
+				while(aux1!=NULL){
+
+					 if(aux1->idPagina==idPagina){
+					 	memoriaUsada=aux1->memoria;
+					 }
+
+
+
+					aux1=aux1->siguiente;
+				}
+
+
+			cout<<""<<endl;
+		}
+
+
+
+
+			aux=aux->siguiente;
+		}
+
+	}
+	return memoriaUsada;
+}
+
+double  memoriaUsoSwap(listaSwap cab){
+
+	listaSwap aux;
+	aux=cab;
+	double memUso=0;
+	if(cab!=NULL){
+
+		while(aux!=NULL){
+			memUso=memUso+aux->memoriaUsada;
+			aux=aux->siguiente;
+		}
+	}
+	return memUso;
+}
+
+listaProcesos procesos=NULL;
+colaUso marcosEnUso=NULL;
+listaMarcos marcos=NULL;
+listaSwap colaSwap=NULL;
+listaTablas tablas=NULL;
+
+//----------------Opciones Menu-------------------
+void abrirProceso(){
+	int procesoAbrir;
+	bool existe;
+	bool abierto;
+	int cantPaginasProceso;
+	srand(time(0));
+	int cantPaginasAbrir;
+	int marcosVacios;
+	bool marcosSuficientes;
+	int paginaBorrar;
+	int procesoBorrar;
+	int marcoBorrar;
+	colaNumeros numeros=NULL;
+	int paginasPorGenerar;
+	double memUsoSwap;
+	double memoriaPaginaBorrar;
+	int procesoCabezaSwap;
+	bool existeSwap;
+	bool existeEnMarco;
+	int marcoYPag;
+	int marcoCrash;
+	int paginaCrash;
+	int numPagina;
+	string nombreCrash;
+	//¿Cual quiere abrir?
+	cout<<"Ingrese el codigo del proceso que desea abrir"<<endl;
+	cin>>procesoAbrir;
+
+
+	//¿El que quiere abrir existe?
+	existe=procesoExiste(procesos,procesoAbrir);
+
+	if(existe){
+		//¿El que quiere abrir ya está abierto?
+		abierto=getProcesoEstaAbierto(tablas,procesoAbrir);
+
+		if(abierto)	{
+			cout<<"El proceso ya se encuentra abierto"<<endl;
+		}else{
+				//¿Cuántas paginas tiene el proceso?
+			cantPaginasProceso=getCantidadPaginasProceso(procesos,procesoAbrir);
+
+				//¿Cuántas páginas se van a abrir?
+		  cantPaginasAbrir=(rand()%cantPaginasProceso)+1;
+
+			  do{
+
+			  	//¿Cuántos marcos hay disponibles?
+					marcosVacios=marcosDisponibles(marcos);
+
+				//¿Hay espacio para abrir esa cantidad de paginas?
+			  	if(cantPaginasAbrir>marcosVacios){
+			  		marcosSuficientes=false;
+					}else{
+						marcosSuficientes=true;
+
+					}
+
+			  	//Liberar espacio si no hay marcos libres para abrirlas
+			  	if(marcosSuficientes==false){
+
+			  		marcoBorrar=marcosEnUso->idMarco;
+			  		paginaBorrar=marcosEnUso->paginaProceso;
+			  		procesoBorrar=marcosEnUso->idProceso;
+						memoriaPaginaBorrar=marcosEnUso->memoriaUsada;
+
+			  		//Borrar de marcosUso
+			  		marcosEnUso=sacarUsoMarco(marcosEnUso);
+
+						memUsoSwap=memoriaUsoSwap(colaSwap) + memoriaPaginaBorrar;
+
+						//Si la pagina que se debe mover a swap no cabe
+						//Es necesario crashear un proceso
+						if(memUsoSwap>2048){
+							procesoCabezaSwap=colaSwap->idProceso;
+
+
+							//Libera páginas de swap mientras siga habiendo coincidencias
+							//del proceso a cerrar
+							do{
+								existeSwap=paginaSwapExiste(colaSwap,procesoCabezaSwap);
+								colaSwap=eliminarProcesoSwap(colaSwap,procesoCabezaSwap);
+
+							}while(existeSwap);
+
+							//Revisa si existen páginas del proceso a cerrar en memoria principal
+							//y las cierra si es el caso
+							do{
+								existeEnMarco=usoMarcoExiste(marcosEnUso,procesoCabezaSwap);
+								if(existeEnMarco){
+									marcoYPag=getMarcoyPagColaUso(marcosEnUso,procesoCabezaSwap);
+									marcosEnUso=eliminarUsoMarco(marcosEnUso,procesoCabezaSwap);
+									marcoCrash=(int) marcoYPag/100;
+									paginaCrash=(marcoYPag % 100)*100;
+
+									modificarMarcoPagina(marcos,marcoCrash,false);
+									modificarPaginaProceso(procesos,procesoCabezaSwap,paginaCrash,false,false);
+								}
+
+							}while(existeEnMarco);
+
+							//Actualizamos el estado de todas las páginas del proceso
+							modificarProceso(procesos,procesoCabezaSwap,false,false);
+							//Liberamos la tabla de páginas
+							tablas=eliminarTabla(tablas,procesoCabezaSwap);
+
+							nombreCrash=getNombreProceso(procesos,procesoCabezaSwap);
+							cout<<"El proceso "<<nombreCrash<< " se ha detenido"<<endl;
+
+						}
+
+						ingresarPaginaSwap(colaSwap,procesoBorrar,paginaBorrar,memoriaPaginaBorrar);
+
+
+						numPagina=procesoBorrar*1000+paginaBorrar;
+							//----Modificar pagina en listaTablas----
+						modificarPaginaTabla(tablas, procesoBorrar,numPagina,-1);
+
+
+
+
+			  		//Informar:se borró la pagina x del proceso x
+			  		cout<<"La pagina "<<paginaBorrar<< " del proceso "<<procesoBorrar<< " ha sido enviada a la memoria swap"<<endl;
+
+
+						//Modificar estado de marco
+						modificarMarcoPagina(marcos,marcoBorrar,false);
+
+
+						//Modificar estado de la pagina enviada a swap en listaProcesos(cerrada y en espera)
+						modificarPaginaProceso(procesos,procesoBorrar,paginaBorrar,false,true);
+				  }
+
+
+
+			  }while(marcosSuficientes==false);
+				double memoria;
+				int paginaNueva;
+				int marcoDisponible;
+				bool existe;
+
+
+				paginasPorGenerar=cantPaginasAbrir;
+				do{
+
+					//¿Página generada es única?
+					do{
+						//¿Cuales paginas se van a abrir?
+						paginaNueva=(rand()%cantPaginasProceso)+1;
+						existe=numExiste(numeros,paginaNueva);
+					}while(existe);
+
+					ingresarColaNum(numeros,paginaNueva);
+					paginasPorGenerar--;
+
+				}while(paginasPorGenerar!=0);
+
+//------Crear tabla de paginas---------
+ingresarTabla(tablas,procesoAbrir);
+
+
+				do{
+
+					paginaNueva=numeros->num;
+					numeros=sacarColaNum(numeros);
+						//¿Cuanta memoria usan?
+					memoria=memoriaUsadaPagina(procesos,procesoAbrir,paginaNueva);
+
+						//¿Cual marco está disponible?
+					marcoDisponible=getMarcoDisponible(marcos);
+
+						//Abrir páginas
+					ingresarUsoMarco(marcosEnUso,marcoDisponible,procesoAbrir,paginaNueva,memoria);
+
+						//Modificar estado de marco
+					modificarMarcoPagina(marcos,marcoDisponible,true);
+						//Modificar estado de la pagina abierta en listaProcesos
+					modificarPaginaProceso(procesos,procesoAbrir,paginaNueva,true,false);
+
+
+					//------------Ingresar pagina a listaTablas-------
+					numPagina=procesoAbrir*1000+paginaNueva;
+					 ingresarPaginaTabla(tablas,procesoAbrir,numPagina,marcoDisponible);
+
+					cantPaginasAbrir--;
+				}while(cantPaginasAbrir!=0);
+
+			cout<<"Se ha abierto el proceso"<<endl;
+
+		}
+	}else{
+		cout<<"El proceso ingresado no existe"<<endl;
+	}
+}
+
+//-----------Menú principal--------------------..
 int main(){
-	listaMarcos marcos=NULL;
-	colaUso marcosEnUso=NULL;
-	listaProcesos procesos=NULL;
-	listaTablas tablas=NULL;
-	listaSwap swap=NULL;
+
 	double memoria;
 	int memInt;
 	int ingresados=0;
@@ -854,6 +1315,57 @@ int main(){
 				ingresarProceso(procesos,5,"League of Legends.exe",memoria);
 				break;
 
+				case 6:
+				memoria=850;
+				ingresarProceso(procesos,6,"Valorant.exe",memoria);
+				break;
+
+				case 7:
+				memoria=600;
+				ingresarProceso(procesos,7,"Chrome.exe",memoria);
+				break;
+
+				case 8:
+				memoria=800;
+				ingresarProceso(procesos,8,"OBS Studio.exe",memoria);
+				break;
+
+				case 9:
+				memoria=450;
+				ingresarProceso(procesos,9,"FileZilla.exe",memoria);
+				break;
+
+				case 10:
+				memoria=800;
+				ingresarProceso(procesos,10,"Audacity.exe",memoria);
+				break;
+
+				case 11:
+				memoria=750;
+				ingresarProceso(procesos,11,"Discord.exe",memoria);
+				break;
+
+				case 12:
+				memoria=850;
+				ingresarProceso(procesos,12,"Calibre.exe",memoria);
+				break;
+
+				case 13:
+				memoria=825;
+				ingresarProceso(procesos,13,"Zoom.exe",memoria);
+				break;
+
+				case 14:
+				memoria=825;
+				ingresarProceso(procesos,14,"vs code.exe",memoria);
+				break;
+
+
+				case 15:
+				memoria=850;
+				ingresarProceso(procesos,15,"Microsoft Teams.exe",memoria);
+				break;
+
 	  }
 		memInt=memoria;
 		memoriaExtra=memInt % 64;
@@ -873,7 +1385,7 @@ int main(){
 		}
 
 
-	}while(ingresados!=5);
+	}while(ingresados!=15);
 
 	ingresados=0;
 
@@ -882,16 +1394,7 @@ int main(){
 		ingresarMarcoPagina(marcos,ingresados,64,false);
 
 	}while(ingresados!=16);
-/*
-Abrir proceso
-ver procesos
-ver marcos
-ver marcos en uso
-ver swap
-ver tablas de paginas
-ver procesos en ejecucion(marcos+swap)
-salir
-*/
+
 	int opcion;
 
 	do{
@@ -911,37 +1414,37 @@ salir
 		switch(opcion){
 			case 1:
 				system("cls");
-				//Método
+				abrirProceso();
 				system("pause");
 				break;
 
 			case 2:
 				system("cls");
-				//Método
+			  verProcesos(procesos);
 				system("pause");
 				break;
 
 			case 3:
 				system("cls");
-				//Método
+			 verListaMarcos(marcos);
 				system("pause");
 				break;
 
 			case 4:
 				system("cls");
-				//Método
+			 verColaUsoMarcos(marcosEnUso);
 				system("pause");
 				break;
 
 			case 5:
 				system("cls");
-				//Método
+				verlistaSwap(colaSwap);
 				system("pause");
 				break;
 
 			case 6:
 				system("cls");
-				//Método
+			 verTablasPag(tablas);
 				system("pause");
 				break;
 

@@ -1274,6 +1274,71 @@ ingresarTabla(tablas,procesoAbrir);
 	}
 }
 
+//---------Cerrar Proceso------------------------------------
+void cerrarProceso(){
+	int procesoCerrar;
+	bool existe;
+	bool abierto;
+	double memUsoSwap;
+	bool existeSwap;
+	bool existeEnMarco;
+	int marcoYPag;
+	int marcoCrash;
+	int paginaCrash;
+	int numPagina;
+	string nombreProceso;
+
+
+	//¿Cual quiere usar?
+	cout<<"Ingrese el codigo del proceso que desea cerrar"<<endl;
+	cin>>procesoCerrar;
+
+
+	//¿El que quiere cerrar existe?
+	existe=procesoExiste(procesos,procesoCerrar);
+	//¿El que quiere cerrar está abierto?
+	abierto=getProcesoEstaAbierto(tablas,procesoCerrar);
+
+	if(existe || abierto){
+
+		//Libera páginas de swap mientras siga habiendo coincidencias
+		//del proceso a cerrar
+		do{
+
+			existeSwap=paginaSwapExiste(colaSwap,procesoCerrar);
+			colaSwap=eliminarProcesoSwap(colaSwap,procesoCerrar);
+
+		}while(existeSwap);
+
+		//Revisa si existen páginas del proceso a cerrar en memoria principal
+		//y las cierra si es el caso
+		do{
+			existeEnMarco=usoMarcoExiste(marcosEnUso,procesoCerrar);
+				if(existeEnMarco){
+					marcoYPag=getMarcoyPagColaUso(marcosEnUso,procesoCerrar);
+					marcosEnUso=eliminarUsoMarco(marcosEnUso,procesoCerrar);
+					marcoCrash=(int) marcoYPag/100;
+					paginaCrash=(marcoYPag % 100)*100;
+
+					modificarMarcoPagina(marcos,marcoCrash,false);
+					modificarPaginaProceso(procesos,procesoCerrar,paginaCrash,false,false);
+				}
+
+		}while(existeEnMarco);
+
+		//Actualizamos el estado de todas las páginas del proceso
+		modificarProceso(procesos,procesoCerrar,false,false);
+		//Liberamos la tabla de páginas
+		tablas=eliminarTabla(tablas,procesoCerrar);
+
+
+		nombreProceso=getNombreProceso(procesos,procesoCerrar);
+		cout<<"El proceso "<<nombreProceso<< " se ha cerrado"<<endl;
+
+
+	}
+}
+
 //-----------Menú principal--------------------..
 int main(){
 
@@ -1406,8 +1471,9 @@ int main(){
 		cout<<"4.Ver marcos en uso"<<endl;
 		cout<<"5.Ver Swap"<<endl;
 		cout<<"6. Ver tablas de paginas"<<endl;
-		cout<<"7. Ver procesos en ejecucion"<<endl;
-		cout<<"8.Salir"<<endl;
+		cout<<"7. Usar Proceso"<<endl;
+		cout<<"8. Cerrar Proceso"<<endl;
+		cout<<"9.Salir"<<endl;
 
 		cin>>opcion;
 
@@ -1453,9 +1519,15 @@ int main(){
 				//Método
 				system("pause");
 				break;
+
+			case 8:
+				system("cls");
+				cerrarProceso();
+				system("pause");
+				break;
 		}
 
-	}while(opcion!=8);
+	}while(opcion!=9);
 
 	return 0;
 }

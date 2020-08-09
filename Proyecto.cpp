@@ -685,9 +685,8 @@ listaSwap sacarPaginaSwap(listaSwap&cab){
 
 listaSwap eliminarProcesoSwap(listaSwap&cab, int idProceso){
 	listaSwap aux,aux2;
-	if(cab==NULL){
-		cout<<"No hay paginas en memoria swap"<<endl;
-	}else{
+
+	if(cab!=NULL){
 		aux=cab;
 
 		if(aux->idProceso==idProceso ){
@@ -712,6 +711,7 @@ listaSwap eliminarProcesoSwap(listaSwap&cab, int idProceso){
 			}
 		}
 	}
+
 	return cab;
 }
 
@@ -1299,7 +1299,7 @@ void cerrarProceso(){
 	//¿El que quiere cerrar está abierto?
 	abierto=getProcesoEstaAbierto(tablas,procesoCerrar);
 
-	if(existe || abierto){
+	if(existe && abierto){
 
 		//Libera páginas de swap mientras siga habiendo coincidencias
 		//del proceso a cerrar
@@ -1336,6 +1336,8 @@ void cerrarProceso(){
 		cout<<"El proceso "<<nombreProceso<< " se ha cerrado"<<endl;
 
 
+	}else{
+			cout<<"El proceso no esta abierto o no existe"<<endl;
 	}
 }
 

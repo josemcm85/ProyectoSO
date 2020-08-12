@@ -10,22 +10,20 @@ Profesor:
 
 Carlos Andrés Méndez
 
- 
-
->   Integrantes:
+Integrantes:
 
 Weslin Mena Montero (20190110862 / Ing. de Software)
 
 Jose Miguel Chaves Miranda(200301010857 /Ing. de Software)
 
-San José, 23 de Julio de 2020
+San José, 13 de Agosto de 2020
 
 # Introducción
 
 Con el aumento de poder de procesamiento de los ordenadores, y el incremento
 exponencial en la complejidad de los programas que estos ejecutan, se volvió
 necesario crear técnicas más eficientes y seguras de manejar la memoria, que no
-solo permitan aprovechar el potencial del hardware disponible, sino que también
+solo permitan aprovechar el potencial del hardware disponible sino que también
 preserven la integridad de los datos y prevengan daños al sistema.
 
 Por esta razón aparecieron las direcciones lógicas de memoria y técnicas de
@@ -377,6 +375,87 @@ Funcionamiento:
     4.  Recorrer memSwap y enviar cuantas páginas sea posible a colaUso.
         Actualizar la tabla de páginas para indicar la nueva ubicación, así como
         listaMarcos.
+
+**Demostración**
+
+![](media/c4100409e72fe096caee042f10021c0d.png)
+
+1.  Abrir un proceso (Sirve para seleccionar el proceso que se desea abrir)
+
+2.  Ver procesos (Muestra lista de procesos disponibles)
+
+3.  Ver marcos de memoria (Muestra lista de Marcos de memoria disponibles)
+
+4.  Ver marcos en uso (Muestra los marcos asignados a un proceso)
+
+5.  Ver swap (Muestra lista de proceso que se encuentran en Swap)
+
+6.  Ver tablas de páginas (Muestra la lista de tablas de paginación de los
+    procesos en ejecución)
+
+7.  Usar Proceso (Sirve para seleccionar proceso a Usar)
+
+8.  Cerrar Proceso
+
+9.  Salir (Cerrar aplicación)
+
+Pasos
+
+1.  Seleccionamos la opción 2 del menú para ver los procesos disponibles
+
+![](media/f9757b40efa1db5425781cd729a5fcb0.png)
+
+1.  Volvemos al menú principal y seleccionamos la opción 3 para ver marcos de
+    memoria
+
+![](media/a700596faee98469ca035abba2f46438.png)
+
+1.  Volvemos al menú principal y seleccionamos opción 1 para abrir un proceso
+    (este paso lo repetimos hasta que veamos que fue necesario pasar paginas al
+    swap)
+
+![](media/b50087acd089f3d3d19ab6b5bd34975c.png)
+
+1.  Volvemos a seleccionar la opción 3 en el menú principal para ver la lista de
+    marcos de memoria y ahora vamos a ver que todos se encuentran en uso.
+
+![](media/9434dd3031cd597a89cbdb2251338a95.png)
+
+1.  Seleccionamos la opción 4 en el menú principal para ver los marcos en uso,
+    nos muestra además la memoria en uso
+
+![](media/017e9634d897b833942e7c5bfd30bc1d.png)
+
+1.  Seleccionamos la opción 5 del menú principal para ver que se encuentra en
+    Swap
+
+![](media/4cd2c14c618afe4e5f0540faf72a4ebb.png)
+
+1.  Seleccionamos la opción 7 del menú principal para ver tablas de paginas,
+    aquí podemos ver cuales procesos se encuentran abiertos, si el Marco muestra
+    un -1 significa que la pagina de el proceso en específico se encuentra en
+    Swap.
+
+![](media/c7ebaccf9bc29fed9d7bfb558d4bab2b.png)
+
+1.  Seleccionamos la opción 7 del menú principal para “Ejecutar un proceso”, en
+    nuestro caso vamos a elegir el proceso 1. Como podemos ver, fue necesario
+    mover procesos a Swap para hacer espacio en la memoria principal, Además se
+    nos muestra las direcciones lógicas y direcciones físicas.
+
+![](media/a687e8d52492e62917112cb77f7c6661.png)
+
+1.  Elegimos la opción 8 del menú principal para cerrar un proceso, en nuestro
+    caso vamos a cerrar el proceso 1. Nos indica el nombre del proceso que se
+    cerró y además se actualizan las tablas.
+
+![](media/c8f824f42b364303d8e716a2ef57f305.png)
+
+>   En tablas de paginación como podemos ver ya no se muestra el proceso 1
+
+![](media/ea5e396f0130e4df00986e9310afb9f6.png)
+
+**Referencias**
 
 <https://scoutapm.com/blog/understanding-page-faults-and-memory-swap-in-outs-when-should-you-worry>
 

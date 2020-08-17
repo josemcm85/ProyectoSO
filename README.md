@@ -161,7 +161,7 @@ en específico.
 **Ventajas de usar swapping**
 
 1.  Mayor memoria disponible , lo que permite que el sistema operativo sea capaz
-    de manejar solicitudes que de otra manera
+    de manejar solicitudes que de otra manera no podría 
 
 2.  Operaciones contiguas: La memoria del archivo o partición swap puede ser
     escrita de forma contigua, lo que permite tener tiempos de búsqueda menores.
@@ -307,57 +307,15 @@ Funcionamiento:
 
 -   **Usar procesos**
 
-    1.  ¿Proceso existe?
-
-        1.  Si no, abortar operación
-
-    2.  ¿Proceso está abierto?
-
-        1.  Si no abortar operación
-
-    3.  ¿Cuáles páginas se van a usar?
-
-        1.  Revisar en listaProcesos, y seleccionar una cantidad aleatoria del
-            total(cuales se escoge también es aleatorio).
-
-        2.  Basado en el tamaño de la página, se genera la palabra a acceder de
-            forma aleatoria(cada palabra tiene un tamaño de 128 KB, así que una
-            página de 64 MB tiene 512 de estas)
-
-        3.  El id de proceso se multiplica \*1000 y se le suma el id de página
-            para crear el número de página
-
-        4.  Se ensambla la dirección lógica en formato num_pagina:palabra(y se
-            informa)
-
-        5.  Se recorre la tabla de páginas correspondiente
-
-            1.  Si una de las páginas de esta no se va a usar, se borra de ahí,
-                de la memoria swap(si aplica), de la colaUso y se actualiza el
-                estado de listaMarcos
-
-            2.  Si se encuentra coincidencias del número de página de la
-                dirección lógica, se revisa su ubicación
-
-                2.  Si esta es -1, se genera un fallo de página,se va a memSwap,
-                    saca la página de ahí y la inserta en la memoria
-                    principal(colaUso), además actualiza su estado en
-                    listaMarcos(debe dejar de recorrer la lista para poder
-                    modificarla). Si es necesario, envía páginas de colaUso a
-                    memSwap o crashea algún proceso(en caso extremo).
-
-                3.  Si el caso A no se cumple entonces marcoUbicacion se combina
-                    con la palabra a acceder para formar la dirección física, en
-                    formato marcoUbicacion:palabra
-
-                4.  Se imprime un mensaje que indica que se ha accedido a dicha
-                    dirección física
-
-            3.  Si una de las páginas a usar no existe en la tabla de
-                paginación, se genera un fallo de página(el cual se informa en
-                pantalla) luego, busca la página y la inserta en colaUso. Si es
-                necesario, envía páginas de colaUso a swap o crashea algún
-                proceso(en caso extremo)
+    1.  ¿Proyecto existe y está abierto? 
+        1. Si no, abortar operación 
+    2.  Recorre listaSwap y busca coincidencias con el proceso a abrir
+         1. Si encuentra coincidencias, libera esas paginas y las inserta en colaUso. Si es necesario, envía páginas de colaUso a swap
+    3.  Recorre listaProcesos para obtener el tamaño de cada página abierta, así como los ID de página, los cuales usa para generar los números de página a usar
+    4. Basado en el tamaño de las páginas, genera números de palabra de forma aleatoria, tomando en cuenta que cada una tiene un tamaño de 128 KB
+    5. Imprime en pantalla la dirección lógica(numPagina:palabra)
+    6. Recorre la tabla de páginas correspondiente y usa el número de pagina para obtener el marcoUbicacion 
+    7. Imprime en pantalla la dirección física de la página(marcoUbicacion:palabra)
 
 -   **Cerrar procesos**
 

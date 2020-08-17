@@ -161,7 +161,7 @@ en específico.
 **Ventajas de usar swapping**
 
 1.  Mayor memoria disponible , lo que permite que el sistema operativo sea capaz
-    de manejar solicitudes que de otra manera
+    de manejar solicitudes que de otra manera no podría 
 
 2.  Operaciones contiguas: La memoria del archivo o partición swap puede ser
     escrita de forma contigua, lo que permite tener tiempos de búsqueda menores.

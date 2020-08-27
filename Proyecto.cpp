@@ -186,8 +186,8 @@ void ingresarColaNum(colaNumeros&cab,int num){
 		}
 
 		//Una vez siguiente==NULL, significa que ha llegado al
-		//final de la lista, así que coloca el nuevo como el
-		//siguiente al último
+		//final de la lista, asï¿½ que coloca el nuevo como el
+		//siguiente al ï¿½ltimo
 		aux->siguiente=nuevo;
 
 	}
@@ -195,7 +195,7 @@ void ingresarColaNum(colaNumeros&cab,int num){
 }
 
 colaNumeros sacarColaNum(colaNumeros cab){
-//Saca el número en cabeza de cola
+//Saca el nï¿½mero en cabeza de cola
 
 
 	colaNumeros aux;
@@ -267,13 +267,17 @@ void modificarMarcoPagina(listaMarcos&cab,int idMarco,bool enUso){
 		while(aux!=NULL){
 
 			if(idMarco==aux->idMarco){
+			
 				aux->enUso=enUso;
+				
 			}
 
 			aux=aux->siguiente;
 		}
 	}
 }
+
+
 
 //------colaUso--------
 void ingresarUsoMarco(colaUso&cab,int idMarco,int idProceso,int paginaProceso,double memoriaUsada){
@@ -371,6 +375,24 @@ while(aux!=NULL){
 }
 return existe;
 }
+
+int marcoBorrar;
+colaUso getMarcoColaUso(colaUso cab,int idProceso){
+	colaUso aux;
+	aux=cab;
+	if(cab!=NULL){
+		while(aux!=NULL){
+			if(aux->idProceso==idProceso){
+			marcoBorrar=aux->idMarco;
+			}
+			aux=aux->siguiente;
+		}
+	}
+
+	return cab;
+}
+
+
 
 int getMarcoyPagColaUso(colaUso cab,int idProceso){
 	colaUso aux;
@@ -497,7 +519,7 @@ void modificarPaginaProceso(listaProcesos cab,int idProceso,int idPagina,bool en
 	}
 }
 
-//lo mismo que modificarPaginaProceso, pero aplica para todas las páginas
+//lo mismo que modificarPaginaProceso, pero aplica para todas las pï¿½ginas
 void modificarProceso(listaProcesos cab,int idProceso,bool enUso,bool enEspera){
 	listaProcesos aux;
 	nodoPaginaProceso*aux1;
@@ -643,6 +665,7 @@ void modificarPaginaTabla(listaTablas cab, int idProceso,int numPagina,int marco
 }
 
 
+
 //----------listaSwap--------------
 void ingresarPaginaSwap(listaSwap&cab,int idProceso, int paginaProceso,double memoriaUsada){
 	nodoSwap*nuevo;
@@ -731,7 +754,7 @@ listaSwap eliminarProcesoSwap(listaSwap&cab, int idProceso){
 		return existe;
 	}
 
-//------Métodos de vista-------------
+//------Mï¿½todos de vista-------------
 void verListaMarcos(listaMarcos cab){
 	listaMarcos aux;
 	aux=cab;
@@ -968,7 +991,7 @@ listaProcesos aux;
 	aux=cab;
 	int cantPaginas=0;
 	if(cab==NULL){
-		cout<<"Lista vacía"<<endl;
+		cout<<"Lista vacï¿½a"<<endl;
 	}else{
 
 		while(aux!=NULL){
@@ -1048,9 +1071,9 @@ void verDirecciones(listaTablas cab, int procesoUsar){
 		}
 
 
-	
+
 	}
-	
+
 }
 
 
@@ -1111,11 +1134,80 @@ double  memoriaUsoSwap(listaSwap cab){
 	return memUso;
 }
 
+int getCountNumeros(colaNumeros cab){
+colaNumeros aux;
+aux=cab;
+int countNum=0;
+if(cab!=NULL){
+
+		while(aux!=NULL){
+			countNum=countNum+1;
+			aux=aux->siguiente;
+		}
+	}
+
+	return countNum;
+}
+
+void liberaMarcos(listaMarcos cab, colaUso cab2){
+	int borrado=1;
+	do{
+
+		modificarMarcoPagina(cab,borrado,false);
+		borrado++;
+	}while(borrado!=16);
+	colaUso aux;
+
+	aux=cab2;
+	if(cab2==NULL){
+	}else{
+
+		while(aux!=NULL){
+
+			modificarMarcoPagina(cab,aux->idMarco,true);
+
+			aux=aux->siguiente;
+		}
+	}
+
+}
+
+
 listaProcesos procesos=NULL;
 colaUso marcosEnUso=NULL;
 listaMarcos marcos=NULL;
 listaSwap colaSwap=NULL;
 listaTablas tablas=NULL;
+
+
+colaNumeros backupTabla(listaTablas cab, int idProceso){
+nodoPagTabla*aux1;
+	listaTablas aux;
+	colaNumeros numeros=NULL;
+	aux=cab;
+	int idPagina;
+	if(cab==NULL){
+
+	}else{
+
+		while(aux!=NULL){
+
+			if(aux->idProceso==idProceso){
+
+				aux1=aux->paginasTablaPag;
+				while(aux1!=NULL){
+				idPagina=aux1->numPagina - idProceso*1000;
+				ingresarColaNum(numeros,idPagina);
+					aux1=aux1->siguiente;
+				}
+			}
+			aux=aux->siguiente;
+		}
+	}
+
+	return numeros;
+}
+
 
 //----------------Opciones Menu-------------------
 void abrirProceso(){
@@ -1142,33 +1234,33 @@ void abrirProceso(){
 	int paginaCrash;
 	int numPagina;
 	string nombreCrash;
-	//¿Cual quiere abrir?
+	//ï¿½Cual quiere abrir?
 	cout<<"Ingrese el codigo del proceso que desea abrir"<<endl;
 	cin>>procesoAbrir;
 
 
-	//¿El que quiere abrir existe?
+	//ï¿½El que quiere abrir existe?
 	existe=procesoExiste(procesos,procesoAbrir);
 
 	if(existe){
-		//¿El que quiere abrir ya está abierto?
+		//ï¿½El que quiere abrir ya estï¿½ abierto?
 		abierto=getProcesoEstaAbierto(tablas,procesoAbrir);
 
 		if(abierto)	{
 			cout<<"El proceso ya se encuentra abierto"<<endl;
 		}else{
-				//¿Cuántas paginas tiene el proceso?
+				//ï¿½Cuï¿½ntas paginas tiene el proceso?
 			cantPaginasProceso=getCantidadPaginasProceso(procesos,procesoAbrir);
 
-				//¿Cuántas páginas se van a abrir?
+				//ï¿½Cuï¿½ntas pï¿½ginas se van a abrir?
 		  cantPaginasAbrir=(rand()%cantPaginasProceso)+1;
 
 			  do{
 
-			  	//¿Cuántos marcos hay disponibles?
+			  	//ï¿½Cuï¿½ntos marcos hay disponibles?
 					marcosVacios=marcosDisponibles(marcos);
 
-				//¿Hay espacio para abrir esa cantidad de paginas?
+				//ï¿½Hay espacio para abrir esa cantidad de paginas?
 			  	if(cantPaginasAbrir>marcosVacios){
 			  		marcosSuficientes=false;
 					}else{
@@ -1195,7 +1287,7 @@ void abrirProceso(){
 							procesoCabezaSwap=colaSwap->idProceso;
 
 
-							//Libera páginas de swap mientras siga habiendo coincidencias
+							//Libera pï¿½ginas de swap mientras siga habiendo coincidencias
 							//del proceso a cerrar
 							do{
 								existeSwap=paginaSwapExiste(colaSwap,procesoCabezaSwap);
@@ -1203,7 +1295,7 @@ void abrirProceso(){
 
 							}while(existeSwap);
 
-							//Revisa si existen páginas del proceso a cerrar en memoria principal
+							//Revisa si existen pï¿½ginas del proceso a cerrar en memoria principal
 							//y las cierra si es el caso
 							do{
 								existeEnMarco=usoMarcoExiste(marcosEnUso,procesoCabezaSwap);
@@ -1219,13 +1311,15 @@ void abrirProceso(){
 
 							}while(existeEnMarco);
 
-							//Actualizamos el estado de todas las páginas del proceso
+
+							//Actualizamos el estado de todas las pï¿½ginas del proceso
 							modificarProceso(procesos,procesoCabezaSwap,false,false);
-							//Liberamos la tabla de páginas
+							//Liberamos la tabla de pï¿½ginas
 							tablas=eliminarTabla(tablas,procesoCabezaSwap);
 
 							nombreCrash=getNombreProceso(procesos,procesoCabezaSwap);
 							cout<<"El proceso "<<nombreCrash<< " se ha detenido"<<endl;
+
 
 						}
 
@@ -1239,7 +1333,7 @@ void abrirProceso(){
 
 
 
-			  		//Informar:se borró la pagina x del proceso x
+			  		//Informar:se borrï¿½ la pagina x del proceso x
 			  		cout<<"La pagina "<<paginaBorrar<< " del proceso "<<procesoBorrar<< " ha sido enviada a la memoria swap"<<endl;
 
 
@@ -1262,10 +1356,9 @@ void abrirProceso(){
 
 				paginasPorGenerar=cantPaginasAbrir;
 				do{
-
-					//¿Página generada es única?
+					//ï¿½Pï¿½gina generada es ï¿½nica?
 					do{
-						//¿Cuales paginas se van a abrir?
+						//ï¿½Cuales paginas se van a abrir?
 						paginaNueva=(rand()%cantPaginasProceso)+1;
 						existe=numExiste(numeros,paginaNueva);
 					}while(existe);
@@ -1283,13 +1376,13 @@ ingresarTabla(tablas,procesoAbrir);
 
 					paginaNueva=numeros->num;
 					numeros=sacarColaNum(numeros);
-						//¿Cuanta memoria usan?
+						//ï¿½Cuanta memoria usan?
 					memoria=memoriaUsadaPagina(procesos,procesoAbrir,paginaNueva);
 
-						//¿Cual marco está disponible?
+						//ï¿½Cual marco estï¿½ disponible?
 					marcoDisponible=getMarcoDisponible(marcos);
 
-						//Abrir páginas
+						//Abrir pï¿½ginas
 					ingresarUsoMarco(marcosEnUso,marcoDisponible,procesoAbrir,paginaNueva,memoria);
 
 						//Modificar estado de marco
@@ -1328,19 +1421,19 @@ void cerrarProceso(){
 	string nombreProceso;
 
 
-	//¿Cual quiere usar?
+	//ï¿½Cual quiere usar?
 	cout<<"Ingrese el codigo del proceso que desea cerrar"<<endl;
 	cin>>procesoCerrar;
 
 
-	//¿El que quiere cerrar existe?
+	//ï¿½El que quiere cerrar existe?
 	existe=procesoExiste(procesos,procesoCerrar);
-	//¿El que quiere cerrar está abierto?
+	//ï¿½El que quiere cerrar estï¿½ abierto?
 	abierto=getProcesoEstaAbierto(tablas,procesoCerrar);
 
 	if(existe && abierto){
 
-		//Libera páginas de swap mientras siga habiendo coincidencias
+		//Libera pï¿½ginas de swap mientras siga habiendo coincidencias
 		//del proceso a cerrar
 		do{
 
@@ -1349,14 +1442,19 @@ void cerrarProceso(){
 
 		}while(existeSwap);
 
-		//Revisa si existen páginas del proceso a cerrar en memoria principal
+		//Revisa si existen pï¿½ginas del proceso a cerrar en memoria principal
 		//y las cierra si es el caso
 		do{
 			existeEnMarco=usoMarcoExiste(marcosEnUso,procesoCerrar);
+		
 				if(existeEnMarco){
 					marcoYPag=getMarcoyPagColaUso(marcosEnUso,procesoCerrar);
+				
 					marcosEnUso=eliminarUsoMarco(marcosEnUso,procesoCerrar);
-					marcoCrash=(int) marcoYPag/100;
+					//marcoCrash=(int) marcoYPag/100;
+					marcosEnUso=getMarcoColaUso(marcosEnUso,procesoCerrar);
+					marcoCrash=marcoBorrar;
+					
 					paginaCrash=(marcoYPag % 100)*100;
 
 					modificarMarcoPagina(marcos,marcoCrash,false);
@@ -1364,10 +1462,11 @@ void cerrarProceso(){
 				}
 
 		}while(existeEnMarco);
+		modificarPaginaProceso(procesos,procesoCerrar,paginaCrash,false,false);
 
-		//Actualizamos el estado de todas las páginas del proceso
+		//Actualizamos el estado de todas las pï¿½ginas del proceso
 		modificarProceso(procesos,procesoCerrar,false,false);
-		//Liberamos la tabla de páginas
+		//Liberamos la tabla de pï¿½ginas
 		tablas=eliminarTabla(tablas,procesoCerrar);
 
 
@@ -1381,6 +1480,169 @@ void cerrarProceso(){
 }
 
 //---------Usar proceso
+
+void ejecutarProceso(){
+
+
+	int procesoUsar;
+	bool existe;
+	bool abierto;
+	bool existeSwap;
+	bool existeEnMarco;
+	int marcoYPag;
+	int marcoCrash;
+	int paginaCrash;
+
+	int cantPaginasAbrir;
+	colaNumeros numeros;
+	cout<<"Ingrese el codigo del proceso que desea usar"<<endl;
+	cin>>procesoUsar;
+
+	existe=procesoExiste(procesos,procesoUsar);
+	abierto=getProcesoEstaAbierto(tablas,procesoUsar);
+
+	if(existe && abierto){
+		numeros=backupTabla(tablas,procesoUsar);
+
+							//Libera pï¿½ginas de swap mientras siga habiendo coincidencias
+							//del proceso a cerrar
+							do{
+								existeSwap=paginaSwapExiste(colaSwap,procesoUsar);
+								colaSwap=eliminarProcesoSwap(colaSwap,procesoUsar);
+
+							}while(existeSwap);
+
+							//Revisa si existen pï¿½ginas del proceso a cerrar en memoria principal
+							//y las cierra si es el caso
+
+							int uso=getCountNumeros(numeros);
+
+
+
+
+
+							do{
+
+								existeEnMarco=usoMarcoExiste(marcosEnUso,procesoUsar);
+								if(existeEnMarco){
+									marcoYPag=getMarcoyPagColaUso(marcosEnUso,procesoUsar);
+									marcosEnUso=eliminarUsoMarco(marcosEnUso,procesoUsar);
+									marcoCrash=(int) marcoYPag/100;
+									paginaCrash=(marcoYPag % 100)*100;
+							
+									modificarMarcoPagina(marcos,marcoCrash,false);
+									modificarPaginaProceso(procesos,procesoUsar,paginaCrash,false,false);
+								}
+
+							}while(existeEnMarco);
+							liberaMarcos(marcos,marcosEnUso);
+							//Actualizamos el estado de todas las pï¿½ginas del proceso
+							modificarProceso(procesos,procesoUsar,false,false);
+							//Liberamos la tabla de pï¿½ginas
+							tablas=eliminarTabla(tablas,procesoUsar);
+		
+
+			int marcosVacios;
+			bool marcosSuficientes;
+			int marcoBorrar;
+			int paginaBorrar;
+			int procesoBorrar;
+			double memoriaPaginaBorrar;
+			int numPagina;
+			cantPaginasAbrir=getCountNumeros(numeros);
+
+			  do{
+
+			  	//ï¿½Cuï¿½ntos marcos hay disponibles?
+					marcosVacios=marcosDisponibles(marcos);
+
+				//ï¿½Hay espacio para abrir esa cantidad de paginas?
+			  	if(cantPaginasAbrir>marcosVacios){
+			  		marcosSuficientes=false;
+					}else{
+						marcosSuficientes=true;
+
+					}
+
+			  	//Liberar espacio si no hay marcos libres para abrirlas
+			  	if(marcosSuficientes==false){
+
+			  		marcoBorrar=marcosEnUso->idMarco;
+			  		paginaBorrar=marcosEnUso->paginaProceso;
+			  		procesoBorrar=marcosEnUso->idProceso;
+						memoriaPaginaBorrar=marcosEnUso->memoriaUsada;
+
+			  		//Borrar de marcosUso
+			  		marcosEnUso=sacarUsoMarco(marcosEnUso);
+
+
+
+
+						ingresarPaginaSwap(colaSwap,procesoBorrar,paginaBorrar,memoriaPaginaBorrar);
+
+
+						numPagina=procesoBorrar*1000+paginaBorrar;
+							//----Modificar pagina en listaTablas----
+						modificarPaginaTabla(tablas, procesoBorrar,numPagina,-1);
+
+
+					//Modificar estado de marco
+						modificarMarcoPagina(marcos,marcoBorrar,false);
+
+
+						//Modificar estado de la pagina enviada a swap en listaProcesos(cerrada y en espera)
+						modificarPaginaProceso(procesos,procesoBorrar,paginaBorrar,false,true);
+				  }
+
+
+
+			  }while(marcosSuficientes==false);
+
+
+
+
+
+
+					ingresarTabla(tablas,procesoUsar);
+
+				int paginaNueva;
+				int memoria;
+				int marcoDisponible;
+
+
+				do{
+
+					paginaNueva=numeros->num;
+					numeros=sacarColaNum(numeros);
+						//ï¿½Cuanta memoria usan?
+					memoria=memoriaUsadaPagina(procesos,procesoUsar,paginaNueva);
+
+						//ï¿½Cual marco estï¿½ disponible?
+					marcoDisponible=getMarcoDisponible(marcos);
+
+						//Abrir pï¿½ginas
+					ingresarUsoMarco(marcosEnUso,marcoDisponible,procesoUsar,paginaNueva,memoria);
+
+						//Modificar estado de marco
+					modificarMarcoPagina(marcos,marcoDisponible,true);
+						//Modificar estado de la pagina abierta en listaProcesos
+					modificarPaginaProceso(procesos,procesoUsar,paginaNueva,true,false);
+
+
+					//------------Ingresar pagina a listaTablas-------
+					numPagina=procesoUsar*1000+paginaNueva;
+					 ingresarPaginaTabla(tablas,procesoUsar,numPagina,marcoDisponible);
+
+					cantPaginasAbrir--;
+				}while(cantPaginasAbrir!=0);
+
+
+		verDirecciones(tablas,procesoUsar);
+	}
+
+}
+
+
 
 void usarProceso(){
 	int procesoUsar;
@@ -1409,19 +1671,19 @@ void usarProceso(){
 
 
 
-	//¿Cual quiere usar?
+	//ï¿½Cual quiere usar?
 	cout<<"Ingrese el codigo del proceso que desea usar"<<endl;
 	cin>>procesoUsar;
 
 
-	//¿El que quiere usar existe?
+	//ï¿½El que quiere usar existe?
 	existe=procesoExiste(procesos,procesoUsar);
 
-	//¿El que quiere usar está abierto?
+	//ï¿½El que quiere usar estï¿½ abierto?
 	abierto=getProcesoEstaAbierto(tablas,procesoUsar);
 
 	if(existe && abierto){
-		
+
 		//Recorre listaSwap y busca coincidencias
 			//Si encuentra coincidencias, libera esas paginas
 		do{
@@ -1430,9 +1692,9 @@ void usarProceso(){
 			colaSwap=eliminarProcesoSwap(colaSwap,procesoUsar);
 
 		}while(existeSwap);
-		
+
 		do{
-	existeEnMarco=usoMarcoExiste(marcosEnUso,procesoUsar);
+		existeEnMarco=usoMarcoExiste(marcosEnUso,procesoUsar);
 		if(existeEnMarco){
 			marcoYPag=getMarcoyPagColaUso(marcosEnUso,procesoUsar);
 			marcosEnUso=eliminarUsoMarco(marcosEnUso,procesoUsar);
@@ -1445,23 +1707,23 @@ void usarProceso(){
 
 			}while(existeEnMarco);
 
-				//Actualizamos el estado de todas las páginas del proceso
+				//Actualizamos el estado de todas las pï¿½ginas del proceso
 				modificarProceso(procesos,procesoUsar,false,false);
-				//Liberamos la tabla de páginas
+				//Liberamos la tabla de pï¿½ginas
 				tablas=eliminarTabla(tablas,procesoUsar);
 
-		//¿Cuántas paginas tiene el proceso?
+		//ï¿½Cuï¿½ntas paginas tiene el proceso?
 		cantPaginasProceso=getCantidadPaginasProceso(procesos,procesoUsar);
 
-		//¿Cuántas páginas se van a abrir?
+		//ï¿½Cuï¿½ntas pï¿½ginas se van a abrir?
 		cantPaginasAbrir=(rand()%cantPaginasProceso)+1;
 
 		do{
 
-			//¿Cuántos marcos hay disponibles?
+			//ï¿½Cuï¿½ntos marcos hay disponibles?
 			marcosVacios=marcosDisponibles(marcos);
 
-			//¿Hay espacio para abrir esa cantidad de paginas?
+			//ï¿½Hay espacio para abrir esa cantidad de paginas?
 			if(cantPaginasAbrir>marcosVacios){
 			  	marcosSuficientes=false;
 			}else{
@@ -1487,7 +1749,7 @@ void usarProceso(){
 				if(memUsoSwap>2048){
 					procesoCabezaSwap=colaSwap->idProceso;
 
-					//Libera páginas de swap mientras siga habiendo coincidencias
+					//Libera pï¿½ginas de swap mientras siga habiendo coincidencias
 					//del proceso a cerrar
 					do{
 						existeSwap=paginaSwapExiste(colaSwap,procesoCabezaSwap);
@@ -1495,7 +1757,7 @@ void usarProceso(){
 
 					}while(existeSwap);
 
-					//Revisa si existen páginas del proceso a cerrar en memoria principal
+					//Revisa si existen pï¿½ginas del proceso a cerrar en memoria principal
 							//y las cierra si es el caso
 					do{
 						existeEnMarco=usoMarcoExiste(marcosEnUso,procesoCabezaSwap);
@@ -1511,9 +1773,9 @@ void usarProceso(){
 
 					}while(existeEnMarco);
 
-					//Actualizamos el estado de todas las páginas del proceso
+					//Actualizamos el estado de todas las pï¿½ginas del proceso
 					modificarProceso(procesos,procesoCabezaSwap,false,false);
-					//Liberamos la tabla de páginas
+					//Liberamos la tabla de pï¿½ginas
 					tablas=eliminarTabla(tablas,procesoCabezaSwap);
 
 					nombreCrash=getNombreProceso(procesos,procesoCabezaSwap);
@@ -1531,7 +1793,7 @@ void usarProceso(){
 
 
 
-			  	//Informar:se borró la pagina x del proceso x
+			  	//Informar:se borrï¿½ la pagina x del proceso x
 			  	cout<<"La pagina "<<paginaBorrar<< " del proceso "<<procesoBorrar<< " ha sido enviada a la memoria swap"<<endl;
 
 
@@ -1546,7 +1808,7 @@ void usarProceso(){
 
 
 		}while(marcosSuficientes==false);
-		
+
 		double memoria;
 		int paginaNueva;
 		int marcoDisponible;
@@ -1556,9 +1818,9 @@ void usarProceso(){
 		paginasPorGenerar=cantPaginasAbrir;
 		do{
 
-			//¿Página generada es única?
+			//ï¿½Pï¿½gina generada es ï¿½nica?
 			do{
-				//¿Cuales paginas se van a abrir?
+				//ï¿½Cuales paginas se van a abrir?
 				paginaNueva=(rand()%cantPaginasProceso)+1;
 				existe=numExiste(numeros,paginaNueva);
 			}while(existe);
@@ -1576,13 +1838,13 @@ void usarProceso(){
 
 			paginaNueva=numeros->num;
 			numeros=sacarColaNum(numeros);
-			//¿Cuanta memoria usan?
+			//ï¿½Cuanta memoria usan?
 			memoria=memoriaUsadaPagina(procesos,procesoUsar,paginaNueva);
 
-			//¿Cual marco está disponible?
+			//ï¿½Cual marco estï¿½ disponible?
 			marcoDisponible=getMarcoDisponible(marcos);
 
-			//Abrir páginas
+			//Abrir pï¿½ginas
 			ingresarUsoMarco(marcosEnUso,marcoDisponible,procesoUsar,paginaNueva,memoria);
 
 			//Modificar estado de marco
@@ -1597,12 +1859,12 @@ void usarProceso(){
 
 			cantPaginasAbrir--;
 		}while(cantPaginasAbrir!=0);
-		
+
 		verDirecciones(tablas,procesoUsar);
-		
+
 		cout<<"	------PROCESO EN EJECUCION------"<<endl;
 		cout<<""<<endl;
-		
+
 	}else{
 		cout<<"El proceso ingresado no existe"<<endl;
 	}
@@ -1612,7 +1874,7 @@ void usarProceso(){
 }
 
 
-//-----------Menú principal--------------------..
+//-----------Menï¿½ principal--------------------..
 int main(){
 
 	double memoria;
@@ -1789,13 +2051,14 @@ int main(){
 
 			case 7:
 				system("cls");
-				usarProceso();
+				ejecutarProceso();
 				system("pause");
 				break;
 
 			case 8:
 				system("cls");
 				cerrarProceso();
+				liberaMarcos(marcos,marcosEnUso);
 				system("pause");
 				break;
 		}
